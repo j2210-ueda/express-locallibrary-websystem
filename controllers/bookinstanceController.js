@@ -131,7 +131,7 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
   }
 
   res.render("bookinstance_form", {
-    title: "Update BookInstance",
+    title: "書籍情報を更新",
     book_list: allBooks,
     selected_book: bookInstance.book._id,
     bookinstance: bookInstance,

@@ -3,11 +3,11 @@ extends layout
 block content
   h1 Title: !{book.title}
 
-  p #[strong Author: ]
+  p #[strong 著者: ]
     a(href=book.author.url) #{book.author.name}
-  p #[strong Summary:] !{book.summary}
-  p #[strong ISBN:] #{book.isbn}
-  p #[strong Genre: ]
+  p #[strong サマリー:] !{book.summary}
+  p #[strong 蔵書番号:] #{book.isbn}
+  p #[strong ジャンル: ]
     each val, index in book.genre
       a(href=val.url) #{val.name}
       if index < book.genre.length - 1
@@ -24,7 +24,7 @@ block content
         p.text-danger #{val.status}
       else
         p.text-warning #{val.status}
-      p #[strong Imprint:] #{val.imprint}
+      p #[strong 出版社:] #{val.imprint}
       if val.status!='Available'
         p #[strong 返却日:] #{val.due_back}
       p #[strong Id: ]

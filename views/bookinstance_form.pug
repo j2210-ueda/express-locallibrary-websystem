@@ -15,7 +15,7 @@ block content
             option(value=book._id) #{book.title}
 
     div.form-group
-      label(for='imprint') Imprint:
+      label(for='imprint') 出版社:
       input#imprint.form-control(type='text' placeholder='Publisher and date information' name='imprint' required value=(undefined===bookinstance ? '' : bookinstance.imprint) )
     div.form-group
       label(for='due_back') 貸出可能日:
