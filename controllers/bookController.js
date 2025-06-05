@@ -17,13 +17,13 @@ exports.index = asyncHandler(async (req, res, next) => {
   ] = await Promise.all([
     Book.countDocuments({}).exec(),
     BookInstance.countDocuments({}).exec(),
-    BookInstance.countDocuments({ status: "Available" }).exec(),
+    BookInstance.countDocuments({ status: "貸出可能" }).exec(),
     Author.countDocuments({}).exec(),
     Genre.countDocuments({}).exec(),
   ]);
 
   res.render("index", {
-    title: "Local Library Home",
+    title: "地域図書館",
     book_count: numBooks,
     book_instance_count: numBookInstances,
     book_instance_available_count: numAvailableBookInstances,
@@ -34,7 +34,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all books.
 exports.book_list = asyncHandler(async (req, res, next) => {
-  const allBooks = await Book.find({}, "title author")
+  const allBooks = await Book.find({}, "タイトル著者")
     .sort({ title: 1 })
     .populate("author")
     .exec();
@@ -52,7 +52,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
   if (book === null) {
     // No results.
-    const err = new Error("Book not found");
+    const err = new Error("書籍が見つかりません");
     err.status = 404;
     return next(err);
   }
@@ -73,7 +73,7 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
   ]);
 
   res.render("book_form", {
-    title: "Create Book",
+    title: "書籍を登録",
     authors: allAuthors,
     genres: allGenres,
   });
@@ -85,25 +85,25 @@ exports.book_create_post = [
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
       req.body.genre =
-        typeof req.body.genre === "undefined" ? [] : [req.body.genre];
+        typeof req.body.genre === "未定義" ? [] : [req.body.genre];
     }
     next();
   },
 
   // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
+  body("title", "タイトルは空欄にできません")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("author", "Author must not be empty.")
+  body("author", "著者は空欄にできません")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("summary", "Summary must not be empty.")
+  body("summary", "サマリーは空欄にできません")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("isbn", "ISBN must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("isbn", "蔵書番号は空欄にできません").trim().isLength({ min: 1 }).escape(),
   body("genre.*").escape(),
   // Process request after validation and sanitization.
 
@@ -136,7 +136,7 @@ exports.book_create_post = [
         }
       }
       res.render("book_form", {
-        title: "Create Book",
+        title: "書籍を登録",
         authors: allAuthors,
         genres: allGenres,
         book: book,
@@ -163,7 +163,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
   }
 
   res.render("book_delete", {
-    title: "Delete Book",
+    title: "書籍を削除",
     book: book,
     book_instances: bookInstances,
   });
@@ -186,7 +186,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
   if (bookInstances.length > 0) {
     // Book has book_instances. Render in same way as for GET route.
     res.render("book_delete", {
-      title: "Delete Book",
+      title: "書籍を削除",
       book: book,
       book_instances: bookInstances,
     });
@@ -209,7 +209,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
 
   if (book === null) {
     // No results.
-    const err = new Error("Book not found");
+    const err = new Error("書籍が見つかりません");
     err.status = 404;
     return next(err);
   }
@@ -220,7 +220,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
   });
 
   res.render("book_form", {
-    title: "Update Book",
+    title: "書籍を更新",
     authors: allAuthors,
     genres: allGenres,
     book: book,
@@ -233,25 +233,25 @@ exports.book_update_post = [
   (req, res, next) => {
     if (!Array.isArray(req.body.genre)) {
       req.body.genre =
-        typeof req.body.genre === "undefined" ? [] : [req.body.genre];
+        typeof req.body.genre === "未定義" ? [] : [req.body.genre];
     }
     next();
   },
 
   // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
+  body("title", "タイトルは空欄にできません")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("author", "Author must not be empty.")
+  body("author", "著者は空欄にできません")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("summary", "Summary must not be empty.")
+  body("summary", "サマリーは空欄にできません")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("isbn", "ISBN must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("isbn", "蔵書番号は空欄にできません").trim().isLength({ min: 1 }).escape(),
   body("genre.*").escape(),
 
   // Process request after validation and sanitization.
@@ -265,7 +265,7 @@ exports.book_update_post = [
       author: req.body.author,
       summary: req.body.summary,
       isbn: req.body.isbn,
-      genre: typeof req.body.genre === "undefined" ? [] : req.body.genre,
+      genre: typeof req.body.genre === "未定義" ? [] : req.body.genre,
       _id: req.params.id, // This is required, or a new ID will be assigned!
     });
 
@@ -285,7 +285,7 @@ exports.book_update_post = [
         }
       }
       res.render("book_form", {
-        title: "Update Book",
+        title: "書籍を更新",
         authors: allAuthors,
         genres: allGenres,
         book: book,

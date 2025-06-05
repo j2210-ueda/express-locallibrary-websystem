@@ -26,15 +26,15 @@ block content
         p.text-warning #{val.status}
       p #[strong Imprint:] #{val.imprint}
       if val.status!='Available'
-        p #[strong Due back:] #{val.due_back}
+        p #[strong 返却日:] #{val.due_back}
       p #[strong Id: ]
         a(href=val.url) #{val._id}
 
     else
-      p There are no copies of this book in the library.
+      p この本は図書館にありません。
 
   hr
   p
-    a(href=book.url+'/delete') Delete Book
+    a(href=book.url+'/delete') 書籍を削除
   p
-    a(href=book.url+'/update') Update Book
+    a(href=book.url+'/update') 書籍を更新
